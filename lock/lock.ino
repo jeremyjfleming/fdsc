@@ -6,12 +6,14 @@
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
 
-char auth[] = "YourAuthToken";
+char auth[] = "V_ocerwAta1ZNoED15wOQ7srd4jnoqhm";
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "YOUR_WIFI_NAME_HERE";
-char pass[] = "YOUR_WIFI_PASSWORD_HERE";
+auto wifisecret = open("fdsc-secrets/wifi", "r");
+const char* name = strtok(wifisecret, "\n")
+char ssid[] = name
+char pass[] = name + 1;
 
 #define DATA_SIZE 45
 char data_buffer[DATA_SIZE];

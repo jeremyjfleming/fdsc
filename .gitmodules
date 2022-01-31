@@ -1,0 +1,3 @@
+[submodule "fdsc-secrets"]
+	path = fdsc-secrets
+	url = https://github.com/jeremyjfleming/fdsc-secrets
