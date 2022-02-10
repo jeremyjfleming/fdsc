@@ -3,18 +3,15 @@
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 
-// You should get Auth Token in the Blynk App.
-// Go to the Project Settings (nut icon).
+// file with auth data
+const char* auth = open("fdsc-secrets/apiKey", "r");
 
-char auth[] = open("fdsc-secrets/apiKey", "r");
-
-// Your WiFi credentials.
-// Set password to "" for open networks.
 auto wifisecret = open("fdsc-secrets/wifi", "r");
 const char* name = strtok(wifisecret, "\n")
 char ssid[] = name
 char pass[] = name + 1;
 
+// memory to allocate for buffer used when transmitting data between device and blynk
 #define DATA_SIZE 45
 char data_buffer[DATA_SIZE];
 char *saveptr;
@@ -68,14 +65,14 @@ void Door_Lock()
 {
   digitalWrite(actuatorw1, HIGH);
   digitalWrite(actuatorw2, LOW);
-  timer.setTimeout(2000L, Actuatoroff); // after 2 seconds actuator will turn off
+  timer.setTimeout(2000L, Actuatoroff); // after 2 seconds lock will turn off
 }
 
 void Door_Unlock()
 {
   digitalWrite(actuatorw1, LOW);
   digitalWrite(actuatorw2, HIGH);
-  timer.setTimeout(2000L, Actuatoroff); // after 2 seconds actuator will turn off
+  timer.setTimeout(10000L, Door_lock); // after 10 seconds the lock will automatically close. 
 }
 
 void Actuatoroff()
@@ -85,10 +82,13 @@ void Actuatoroff()
 }
 
 void Serialcheck()
+// Checks the Blynk serial input for changes in the commands
 {
   memset(data_buffer, 0 , sizeof(data_buffer));
+  // if the serial connection is not available then there is no use checking anything else
   if (Serial.available() > 0)
   {
+    // read bytes from the serial connection and write it to the buffer
     Serial.readBytes(data_buffer, DATA_SIZE);
     String command = strtok_r(data_buffer, ",", &saveptr);
 
