@@ -28,3 +28,12 @@ class Door:
     def actuator_off():
         actuatorw1.write(0)
         actuatorw1.write(0)
+
+def face_detect(detector, embedding_model, recognizer, le):
+    protoPath = os.path.sep.join([detector, "deploy.prototxt"])
+    modelPath = os.path.sep.join([detector,
+	    "res10_300x300_ssd_iter_140000.caffemodel"])
+    fdetector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+    fembedder = cv2.dnn.readNetFromTorch(embedding_model)
+    frecognizer = pickle.loads(open(recognizer, "rb").read())
+    fle = pickle.loads(open(le, "rb").read())
