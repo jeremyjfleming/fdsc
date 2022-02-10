@@ -83,6 +83,7 @@ void Actuatoroff()
 
 void Serialcheck()
 // Checks the Blynk serial input for changes in the commands
+// this is used for debugging only
 {
   memset(data_buffer, 0 , sizeof(data_buffer));
   // if the serial connection is not available then there is no use checking anything else
